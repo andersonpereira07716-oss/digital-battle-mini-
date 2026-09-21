@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Digital Battle Mini</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            user-select: none;
+            -webkit-user-select: none;
+        }
+
+        body {
+            background-color: #030712;
+            color: #f3f4f6;
+            overflow: hidden;
+            height: 100vh;
+            width: 100vw;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .screen {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 2;
+            padding: 20px;
+            background: rgba(3, 7, 18, 0.95);
+        }
+
+        h1 {
+            font-size: 1.8rem;
+            color: #38bdf8;
+            text-align: center;
+            text-shadow: 0 0 15px rgba(56, 189, 248, 0.5);
+            margin-bottom: 5px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .subtitle {
+            font-size: 0.8rem;
+            color: #94a3b8;
+            margin-bottom: 25px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        .menu-btn {
+            width: 100%;
+            max-width: 300px;
+            padding: 14px;
+            margin: 7px 0;
+            background: linear-gradient(135deg, #0284c7, #7c3aed);
+            border: none;
+            border-radius: 12px;
+            color: white;
+            font-size: 0.95rem;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(2, 132, 199, 0.4);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .menu-btn:active {
+            transform: scale(0.96);
+            filter: brightness(1.2);
+        }
+
+        /* Container de Listas com Scroll */
+        .scroll-container {
+            width: 100%;
+            max-width: 340px;
+            max-height: 50vh;
+            overflow-y: auto;
+            margin-bottom: 15px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        /* Arena de Batalha */
+        .battle-arena {
+            width: 100%;
+            max-width: 340px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .fighter-box {
+            background: rgba(15, 23, 42, 0.9);
+            border: 2px solid #1e293b;
+            border-radius: 12px;
+            padding: 12px;
+            position: relative;
+        }
+
+        .hp-bar-bg {
+            width: 100%;
+            height: 10px;
+            background: #334155;
+            border-radius: 5px;
+            overflow: hidden;
+            margin-top: 6px;
+        }
+
+        .hp-bar-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #10b981, #34d399);
+            width: 100%;
+            transition: width 0.3s ease;
+        }
+
+        .battle-log {
+            background: rgba(3, 7, 18, 0.95);
+            border: 1px solid #1e293b;
+            border-radius: 8px;
+            height: 75px;
+            padding: 8px;
+            font-size: 0.75rem;
+            color: #38bdf8;
+            overflow-y: auto;
+            font-family: monospace;
+            text-align: left;
+        }
+    </style>
+</head>
+<body>
+
+   <!-- TELA PRINCIPAL -->
+<div id="screen-main" class="screen" style="display: flex;">
+    <h1>Digital Battle</h1>
+    <div class="subtitle">Menu Principal</div>
+
+    <button class="menu-btn" onclick="startBattle()">▶ Entrar em Batalha</button>
+    <button class="menu-btn" onclick="showScreen('screen-missions'); renderMissionsList();">🗺️ Missões do Sistema</button>
+    <button class="menu-btn" onclick="showScreen('screen-creatures')">🐾 Minhas Criaturas</button>
+    <button class="menu-btn" onclick="showScreen('screen-shop')">🛒 Loja do Sistema</button>
+    <button class="menu-btn" onclick="showScreen('screen-achievements'); renderAchievements();">🏆 Conquistas</button>
+    <button class="menu-btn" onclick="showScreen('screen-profile'); updateProfileUI();">📊 Perfil & Stats</button>
+    <button class="menu-btn" onclick="showScreen('screen-gacha')">🎁 Descodificar Criatura (Gacha)</button>
+    <button class="menu-btn" onclick="showScreen('screen-config')">⚙️ Configurações</button>
+</div>
+
+ 
+
+    <!-- TELA DE CRIATURAS -->
+    <div id="screen-creatures" class="screen">
+        <h1>Gestão de Equipa</h1>
+        <div class="subtitle">Escolha a sua criatura ativa</div>
+        <div class="scroll-container" id="creatures-list-container"></div>
+        <button class="menu-btn" onclick="showScreen('screen-main')">Voltar</button>
+    </div>
+
+    <!-- TELA DA LOJA -->
+
+    <div id="screen-shop" class="screen">
+        <h1>Loja do Sistema</h1>
+        <div class="subtitle">Suas Moedas: <span id="shop-coins" style="color: #38bdf8;">100</span> DATA</div>
+        
+        <div class="scroll-container">
+            <div style="background: rgba(15, 23, 42, 0.85); border: 1px solid #1e293b; border-radius: 10px; padding: 12px; margin-bottom: 8px; width: 100%; display: flex; justify-content: space-between; align-items: center;">
+                <div style="text-align: left;"><div style="font-size: 0.9rem; color: #38bdf8; font-weight: bold;">Recuperar HP</div><div style="font-size: 0.7rem; color: #94a3b8;">Cura 100% da vida</div></div>
+                <button onclick="buyItem('heal')" style="padding: 8px 12px; background: #0284c7; border: none; border-radius: 6px; color: white; font-weight: bold;">30 DATA</button>
+            </div>
+            <div style="background: rgba(15, 23, 42, 0.85); border: 1px solid #1e293b; border-radius: 10px; padding: 12px; margin-bottom: 8px; width: 100%; display: flex; justify-content: space-between; align-items: center;">
+                <div style="text-align: left;"><div style="font-size: 0.9rem; color: #38bdf8; font-weight: bold;">Recarregar Energia</div><div style="font-size: 0.7rem; color: #94a3b8;">Pronto para combate</div></div>
+                <button onclick="buyItem('energy')" style="padding: 8px 12px; background: #0284c7; border: none; border-radius: 6px; color: white; font-weight: bold;">20 DATA</button>
+            </div>
+            <div style="background: rgba(15, 23, 42, 0.85); border: 1px solid #1e293b; border-radius: 10px; padding: 12px; margin-bottom: 8px; width: 100%; display: flex; justify-content: space-between; align-items: center;">
+                <div style="text-align: left;"><div style="font-size: 0.9rem; color: #38bdf8; font-weight: bold;">Boost de XP</div><div style="font-size: 0.7rem; color: #94a3b8;">Ganha +50 XP imediato</div></div>
+                <button onclick="buyItem('xp')" style="padding: 8px 12px; background: #0284c7; border: none; border-radius: 6px; color: white; font-weight: bold;">50 DATA</button>
+
+            <div style="background: rgba(15, 23, 42, 0.95); border: 2px solid #38bdf8; border-radius: 12px; padding: 12px; margin-bottom: 15px; width: 100%; max-width: 320px; text-align: left;">
+    <div style="font-weight: bold; color: #38bdf8; font-size: 0.95rem;">📺 Patrocínio da Rede (Anúncio)</div>
+    <div style="font-size: 0.75rem; color: #94a3b8; margin: 4px 0;">Assista a um breve sinal para receber +50 DATA gratuitos.</div>
+    <button onclick="window.watchAdReward()" style="cursor: pointer; margin-top: 8px; width: 100%; padding: 12px; background: #0284c7; border: none; border-radius: 6px; color: white; font-weight: bold; font-size: 0.95rem;">
+        ▶ Ver Anúncio (+50 DATA)
+    </button>
+</div>
+       
+
+
+    <button class="menu-btn" onclick="showScreen('screen-main')">VOLTAR</button>
+
+</div>
+
+<!-- TELA DE MISSÕES -->
+<div id="screen-missions" class="screen">
+    <h1>MISSÕES DO SISTEMA</h1>
+    <div class="subtitle">Selecione o Andar</div>
+    <div id="mission-list"></div>
+    <button class="menu-btn" onclick="showScreen('screen-main')">VOLTAR</button>
+</div>
+
+
+    <!-- TELA DE CONFIGURAÇÕES -->
+    <div id="screen-config" class="screen">
+        <h1>Configurações</h1>
+        <div class="subtitle">Preferências do Sistema</div>
+        <button class="menu-btn" onclick="localStorage.clear(); location.reload();" style="background: linear-gradient(135deg, #ef4444, #b91c1c);">Resetar Save (Dados)</button>
+        <button class="menu-btn" onclick="showScreen('screen-main')" style="margin-top: 15px;">Voltar</button>
+    </div>
+
+    <!-- TELA DE BATALHA -->
+    <div id="screen-battle" class="screen">
+        <div class="battle-arena">
+            <!-- Inimigo -->
+            <div class="fighter-box">
+                <div style="display: flex; justify-content: space-between; font-weight: bold;">
+                    <span id="battle-enemy-name">Inimigo</span>
+                    <span id="battle-enemy-hp" style="font-size: 0.8rem; color: #ef4444;">HP: 80/80</span>
+                </div>
+                <div class="hp-bar-bg"><div class="hp-bar-fill" id="battle-enemy-hp-bar" style="background: #ef4444;"></div></div>
+                <div id="battle-enemy-avatar" style="position: absolute; right: 12px; bottom: 8px; font-size: 1.8rem; opacity: 0.8;">🐛</div>
+            </div>
+
+            <!-- Registo -->
+            <div class="battle-log" id="battle-log">
+                <div>> Entrou na arena de combate.</div>
+            </div>
+
+            <!-- Jogador -->
+            <div class="fighter-box">
+                <div style="display: flex; justify-content: space-between; font-weight: bold;">
+                    <span id="battle-player-name">Criatura</span>
+                    <span id="battle-player-hp" style="font-size: 0.8rem; color: #38bdf8;">HP: 90/90</span>
+                </div>
+                <div class="hp-bar-bg"><div class="hp-bar-fill" id="battle-player-hp-bar"></div></div>
+                <div id="battle-player-avatar" style="position: absolute; right: 12px; bottom: 8px; font-size: 1.8rem; opacity: 0.8;">⚡</div>
+            </div>
+        </div>
+
+        <!-- Botões de Ação -->
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; width: 100%; max-width: 340px; margin-top: 15px;">
+            <button class="menu-btn" onclick="playerAttack()" style="margin:0; font-size: 0.85rem; padding: 12px;">Atacar</button>
+            <button class="menu-btn" onclick="playerSpecial()" style="margin:0; font-size: 0.85rem; padding: 12px; background: linear-gradient(135deg, #f59e0b, #ef4444);">Especial</button>
+        </div>
+    </div>
+
+    <script src="game.js"></script>
+<!-- ECRÃ DE CONQUISTAS -->
+<div id="screen-achievements" class="screen hidden">
+    <h2>CONQUISTAS</h2>
+    <div class="subtitle">Missões de Longo Prazo</div>
+    <div id="achievements-list" class="scroll-container"></div>
+    <button class="menu-btn" onclick="showScreen('screen-main')">VOLTAR</button>
+</div>
+
+<!-- ECRÃ DE PERFIL -->
+<div id="screen-profile" class="screen hidden">
+    <h2>PERFIL DO HACKER</h2>
+    <div class="subtitle">Estatísticas Gerais</div>
+    <div id="profile-stats" style="background: rgba(15, 23, 42, 0.9); padding: 15px; border-radius: 12px; margin-bottom: 15px; text-align: left; width: 100%; max-width: 320px; font-size: 0.9rem; color: #cbd5e1;"></div>
+    <button class="menu-btn" onclick="showScreen('screen-main')">VOLTAR</button>
+</div>
+
+<!-- ECRÃ DE GACHA -->
+<div id="screen-gacha" class="screen hidden">
+    <h2>DESCODI. DE DADOS</h2>
+    <div class="subtitle">Invoque Novas Criaturas (Custo: 80 DATA)</div>
+    <div id="gacha-result" style="margin: 20px 0; font-size: 1.1rem; color: #38bdf8; min-height: 50px;"></div>
+    <button class="menu-btn" onclick="rollGacha()">Executar Invocação</button>
+    <button class="menu-btn" onclick="showScreen('screen-main')">VOLTAR</button>
+</div>
+
+</body>
+</html>
