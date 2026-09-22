@@ -8,14 +8,14 @@ jobs:
       - uses: actions/setup-java@v4
         with:
           distribution: 'temurin'
-          java-version: '17'
+          java-version: '20'
       - uses: actions/setup-node@v4
         with:
           node-version: 22
       - run: npm install
       - run: npm run build --if-present
-      - run: npx cap add android || true
-      - run: npx cap sync android
+      - run: npx @capacitor/cli add android || true
+      - run: npx @capacitor/cli sync android
       - run: cd android && chmod +x gradlew && ./gradlew assembleDebug
       - uses: actions/upload-artifact@v4
         with:
