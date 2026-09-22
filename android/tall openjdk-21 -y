@@ -1,0 +1,36 @@
+[32mopenjdk-11[0m/tur-packages 11.0.32 aarch64
+  Java development kit and runtime
+
+[32mopenjdk-11-source[0m/tur-packages 11.0.32 all
+  Source files for openjdk-11
+
+[32mopenjdk-11-x[0m/tur-packages 11.0.32 aarch64
+  Portion of openjdk-11 requiring X11 functionality
+
+[32mopenjdk-21[0m/stable 21.0.11 aarch64
+  Java development kit and runtime
+
+[32mopenjdk-21-source[0m/stable 21.0.11 all
+  Source files for openjdk-21
+
+[32mopenjdk-21-x[0m/stable 21.0.11 aarch64
+  Portion of openjdk-21 requiring X11 functionality
+
+[32mopenjdk-25[0m/stable 25.0.3 aarch64
+  Java development kit and runtime
+
+[32mopenjdk-25-source[0m/stable 25.0.3 all
+  Source files for openjdk-25
+
+[32mopenjdk-25-x[0m/stable 25.0.3 aarch64
+  Portion of openjdk-25 requiring X11 functionality
+
+[32mopenjdk-26[0m/tur-packages 26.0.2 aarch64
+  Java development kit and runtime
+
+[32mopenjdk-26-source[0m/tur-packages 26.0.2 all
+  Source files for openjdk-26
+
+[32mopenjdk-26-x[0m/tur-packages 26.0.2 aarch64
+  Portion of openjdk-26 requiring X11 functionality
+
