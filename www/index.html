@@ -2,30 +2,29 @@
 <html lang="pt">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Digital Battle Mini</title>
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
-        body { background-color: #050b14; color: #fff; display: flex; justify-content: center; align-items: center; min-height: 100vh; overflow-x: hidden; }
-        .screen { display: none; width: 100%; max-width: 480px; min-height: 100vh; padding: 20px; flex-direction: column; align-items: center; justify-content: flex-start; background: #050b14; position: absolute; top: 0; left: 50%; transform: translateX(-50%); }
+        body { background-color: #050b14; color: #fff; width: 100vw; height: 100vh; overflow: hidden; display: flex; justify-content: center; align-items: center; }
+        .screen { display: none; width: 100%; height: 100%; max-width: 480px; padding: 20px; flex-direction: column; align-items: center; justify-content: flex-start; background: #050b14; position: absolute; top: 0; left: 50%; transform: translateX(-50%); overflow-y: auto; }
         .screen.active { display: flex; }
         
-        h1 { font-size: 1.8rem; color: #38bdf8; text-shadow: 0 0 10px rgba(56, 189, 248, 0.5); margin-bottom: 5px; text-align: center; text-transform: uppercase; }
+        h1 { font-size: 1.8rem; color: #38bdf8; text-shadow: 0 0 10px rgba(56, 189, 248, 0.5); margin-bottom: 5px; text-align: center; text-transform: uppercase; margin-top: 10px; }
         .subtitle { font-size: 0.9rem; color: #94a3b8; margin-bottom: 20px; text-align: center; }
 
         /* Menu Principal */
-        .menu-container { display: flex; flex-direction: column; gap: 12px; width: 100%; margin-top: 10px; }
-        .menu-btn { width: 100%; background: linear-gradient(135deg, #3b82f6, #8b5cf6); color: white; border: none; padding: 14px; border-radius: 12px; font-weight: bold; font-size: 1rem; cursor: pointer; text-align: center; box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3); transition: transform 0.1s; }
-        .menu-btn:active { transform: scale(0.97); }
+        .menu-container { display: flex; flex-direction: column; gap: 10px; width: 100%; padding-bottom: 20px; }
+        .menu-btn { width: 100%; background: linear-gradient(135deg, #3b82f6, #8b5cf6); color: white; border: none; padding: 12px; border-radius: 12px; font-weight: bold; font-size: 0.95rem; cursor: pointer; text-align: center; box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3); }
+        .menu-btn:active { transform: scale(0.98); }
 
         /* Loja */
-        .shop-container { display: flex; flex-direction: column; gap: 12px; width: 100%; overflow-y: auto; padding-bottom: 20px; }
-        .shop-card { background: rgba(15, 23, 42, 0.9); border: 1px solid rgba(6, 182, 212, 0.4); border-radius: 12px; padding: 14px; display: flex; justify-content: space-between; align-items: center; width: 100%; }
+        .shop-container { display: flex; flex-direction: column; gap: 10px; width: 100%; padding-bottom: 20px; }
+        .shop-card { background: rgba(15, 23, 42, 0.9); border: 1px solid rgba(6, 182, 212, 0.4); border-radius: 12px; padding: 12px; display: flex; justify-content: space-between; align-items: center; width: 100%; }
         .shop-info { text-align: left; }
-        .shop-title { font-weight: bold; color: #38bdf8; font-size: 1rem; }
-        .shop-desc { font-size: 0.75rem; color: #94a3b8; margin-top: 2px; }
-        .shop-btn { background: #0284c7; color: white; border: none; padding: 8px 14px; border-radius: 8px; font-weight: bold; cursor: pointer; white-space: nowrap; }
-        .shop-btn:active { background: #0369a1; }
+        .shop-title { font-weight: bold; color: #38bdf8; font-size: 0.95rem; }
+        .shop-desc { font-size: 0.7rem; color: #94a3b8; margin-top: 2px; }
+        .shop-btn { background: #0284c7; color: white; border: none; padding: 8px 12px; border-radius: 8px; font-weight: bold; cursor: pointer; white-space: nowrap; font-size: 0.85rem; }
     </style>
 </head>
 <body>
@@ -36,18 +35,18 @@
         <div class="subtitle">Menu Principal</div>
         
         <div class="menu-container">
-            <button class="menu-btn" onclick="changeScreen('screen-battle')">▶ Entrar em Batalha</button>
-            <button class="menu-btn" onclick="changeScreen('screen-missions')">📜 Missões do Sistema</button>
-            <button class="menu-btn" onclick="changeScreen('screen-creatures')">🛡 Minhas Criaturas</button>
-            <button class="menu-btn" onclick="changeScreen('screen-shop')">🛒 Loja do Sistema</button>
-            <button class="menu-btn" onclick="changeScreen('screen-conquests')">🏆 Conquistas</button>
-            <button class="menu-btn" onclick="changeScreen('screen-profile')">📊 Perfil & Stats</button>
-            <button class="menu-btn" onclick="changeScreen('screen-gacha')">🎁 Descodificar Criatura (Gacha)</button>
-            <button class="menu-btn" onclick="changeScreen('screen-settings')">⚙ Configurações</button>
+            <button class="menu-btn" onclick="switchScreen('screen-battle')">▶ Entrar em Batalha</button>
+            <button class="menu-btn" onclick="switchScreen('screen-missions')">📜 Missões do Sistema</button>
+            <button class="menu-btn" onclick="switchScreen('screen-creatures')">🛡 Minhas Criaturas</button>
+            <button class="menu-btn" onclick="switchScreen('screen-shop')">🛒 Loja do Sistema</button>
+            <button class="menu-btn" onclick="switchScreen('screen-conquests')">🏆 Conquistas</button>
+            <button class="menu-btn" onclick="switchScreen('screen-profile')">📊 Perfil & Stats</button>
+            <button class="menu-btn" onclick="switchScreen('screen-gacha')">🎁 Descodificar Criatura (Gacha)</button>
+            <button class="menu-btn" onclick="switchScreen('screen-settings')">⚙ Configurações</button>
         </div>
     </div>
 
-    <!-- TELA DA LOJA (Corrigida e Limpa) -->
+    <!-- TELA DA LOJA -->
     <div id="screen-shop" class="screen">
         <h1>Loja do Sistema</h1>
         <div class="subtitle">Suas Moedas: <span id="shop-coins">100</span> DATA</div>
@@ -80,31 +79,31 @@
             <div class="shop-card">
                 <div class="shop-info">
                     <div class="shop-title">Patrocínio da Rede</div>
-                    <div class="shop-desc">Assista para +50 DATA gratuitos</div>
+                    <div class="shop-desc">Assista para +50 DATA</div>
                 </div>
-                <button class="shop-btn" onclick="window.watchAdReward && window.watchAdReward()">Ver Anúncio</button>
+                <button class="shop-btn" onclick="watchAd()">Ver Anúncio</button>
             </div>
 
-            <button class="menu-btn" style="background: #6366f1; margin-top: 10px;" onclick="changeScreen('screen-menu')">VOLTAR</button>
+            <button class="menu-btn" style="background: #6366f1; margin-top: 5px;" onclick="switchScreen('screen-menu')">VOLTAR</button>
         </div>
     </div>
 
-    <!-- OUTRAS TELAS GENÉRICAS PARA EVITAR TELA PRETA -->
+    <!-- TELAS SECUNDÁRIAS -->
     <div id="screen-battle" class="screen">
         <h1>Batalha</h1>
         <div class="subtitle">Área de Combate</div>
-        <button class="menu-btn" onclick="changeScreen('screen-menu')">VOLTAR</button>
+        <button class="menu-btn" onclick="switchScreen('screen-menu')">VOLTAR</button>
     </div>
-    <div id="screen-missions" class="screen"><h1>Missões</h1><button class="menu-btn" onclick="changeScreen('screen-menu')">VOLTAR</button></div>
-    <div id="screen-creatures" class="screen"><h1>Criaturas</h1><button class="menu-btn" onclick="changeScreen('screen-menu')">VOLTAR</button></div>
-    <div id="screen-conquests" class="screen"><h1>Conquistas</h1><button class="menu-btn" onclick="changeScreen('screen-menu')">VOLTAR</button></div>
-    <div id="screen-profile" class="screen"><h1>Perfil</h1><button class="menu-btn" onclick="changeScreen('screen-menu')">VOLTAR</button></div>
-    <div id="screen-gacha" class="screen"><h1>Gacha</h1><button class="menu-btn" onclick="changeScreen('screen-menu')">VOLTAR</button></div>
-    <div id="screen-settings" class="screen"><h1>Configurações</h1><button class="menu-btn" onclick="changeScreen('screen-menu')">VOLTAR</button></div>
+    <div id="screen-missions" class="screen"><h1>Missões</h1><div class="subtitle">Missões Diárias</div><button class="menu-btn" onclick="switchScreen('screen-menu')">VOLTAR</button></div>
+    <div id="screen-creatures" class="screen"><h1>Criaturas</h1><div class="subtitle">Seu Inventário</div><button class="menu-btn" onclick="switchScreen('screen-menu')">VOLTAR</button></div>
+    <div id="screen-conquests" class="screen"><h1>Conquistas</h1><div class="subtitle">Medalhas e Troféus</div><button class="menu-btn" onclick="switchScreen('screen-menu')">VOLTAR</button></div>
+    <div id="screen-profile" class="screen"><h1>Perfil</h1><div class="subtitle">Estatísticas do Jogador</div><button class="menu-btn" onclick="switchScreen('screen-menu')">VOLTAR</button></div>
+    <div id="screen-gacha" class="screen"><h1>Gacha</h1><div class="subtitle">Descodificar Nova Criatura</div><button class="menu-btn" onclick="switchScreen('screen-menu')">VOLTAR</button></div>
+    <div id="screen-settings" class="screen"><h1>Configurações</h1><div class="subtitle">Opções de Jogo</div><button class="menu-btn" onclick="switchScreen('screen-menu')">VOLTAR</button></div>
 
     <script>
-        function changeScreen(screenId) {
-            document.querySelectorAll('.screen').forEach(el => el.classList.remove('active'));
+        function switchScreen(screenId) {
+            document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
             const target = document.getElementById(screenId);
             if (target) {
                 target.classList.add('active');
@@ -113,7 +112,10 @@
             }
         }
         function buyItem(item) {
-            alert('Item adquirido: ' + item);
+            alert('Item adquirido com sucesso: ' + item);
+        }
+        function watchAd() {
+            alert('Anúncio assistido! +50 DATA adicionados.');
         }
     </script>
 </body>
