@@ -13,6 +13,7 @@ jobs:
       with:
         node-version: 18
     - run: npm install
+    - run: npm install @capacitor/cli @capacitor/core @capacitor/android
     - run: npm run build --if-present
     - run: npx cap add android || true
     - run: npx cap sync android
